@@ -11,7 +11,10 @@
   "dependencies": {
     "next": "12.2.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "slate": "^0.82.1",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.82.1"
   },
   "devDependencies": {
     "@types/node": "18.7.14",
