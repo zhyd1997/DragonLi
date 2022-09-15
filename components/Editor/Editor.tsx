@@ -6,6 +6,7 @@ import { Element } from './Element';
 import type { ElementProps } from './Element';
 import { Leaf } from './Leaf';
 import type { LeafProps } from './Leaf';
+import { Toolbar } from '../Toolbar';
 
 const initialValue: Descendant[] = [
   {
@@ -52,7 +53,7 @@ export const Editor = () => {
 
   return (
     <Slate editor={editor} value={initialValue}>
-      {/* TODO Toolbar */}
+      <Toolbar />
       <Editable renderElement={renderElement} renderLeaf={renderLeaf} placeholder="Enter some rich text..." autoFocus />
     </Slate>
   );
