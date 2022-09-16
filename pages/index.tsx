@@ -32,7 +32,7 @@ const Home: NextPage<HomePageProps> = ({ articles }) => {
           <div key={article.id} style={{ marginBottom: '16px' }}>
             <Link
               href={{
-                pathname: 'articles/[slug]',
+                pathname: 'article/[slug]',
                 query: { slug: article.slug}
               }}
             >
