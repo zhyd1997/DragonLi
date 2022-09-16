@@ -1,58 +1,45 @@
-import { useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { withHistory } from 'slate-history';
-import { Descendant ,createEditor } from 'slate';
+import type { Descendant } from 'slate';
+import { createEditor } from 'slate';
 import { withReact, Slate, Editable } from 'slate-react';
 import { Element } from './Element';
 import type { ElementProps } from './Element';
 import { Leaf } from './Leaf';
 import type { LeafProps } from './Leaf';
-import { Toolbar } from '../Toolbar';
 import { Paper } from '@mui/material';
+import { Toolbar } from '@/components/Toolbar';
 
 const initialValue: Descendant[] = [
   {
-    type: 'paragraph',
-    children: [
-      { text: 'This is editable ' },
-      { text: 'rich', bold: true },
-      { text: ' text, ' },
-      { text: 'much', italic: true },
-      { text: ' better than a ' },
-      { text: '<textarea>', code: true },
-      { text: '!' },
-    ],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: 'bold', bold: true },
-      {
-        text:
-          ', or add a semantically rendered block quote in the middle of the page, like this:',
-      },
-    ],
-  },
-  {
-    type: 'block-quote',
-    children: [{ text: 'A wise quote.' }],
-  },
+      "type": "paragraph",
+      "children": [
+          {
+              "text": ""
+          }
+      ]
+  }
 ];
 
-export const Editor = () => {
+type EditorProps = {
+  /** the editor content */
+  value?: Descendant[];
+  /** editable or read-only */
+  editable?: boolean;
+};
+
+export const Editor: FC<EditorProps> = ({ value = initialValue, editable = true }) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = useCallback((props: ElementProps) => <Element {...props}/>, []);
   const renderLeaf = useCallback((props: LeafProps) => <Leaf {...props}/>, []);
 
   return (
-    <Slate editor={editor} value={initialValue}>
-      <Toolbar />
-      <Paper elevation={10} sx={{ margin: '24px' }}>
+    <Slate editor={editor} value={value}>
+      {editable && (<Toolbar />)}
+      <Paper elevation={editable ? 10 : 2} sx={{ margin: '24px' }}>
         <Editable
           style={{ padding: '24px' }}
+          readOnly={!editable}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Enter some rich text..."
