@@ -54,7 +54,13 @@ export const Editor = () => {
   return (
     <Slate editor={editor} value={initialValue}>
       <Toolbar />
-      <Editable renderElement={renderElement} renderLeaf={renderLeaf} placeholder="Enter some rich text..." autoFocus />
+      <Editable
+        style={{ padding: '24px' }}
+        renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        placeholder="Enter some rich text..."
+        autoFocus
+      />
     </Slate>
   );
 };
