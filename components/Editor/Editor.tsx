@@ -7,6 +7,7 @@ import type { ElementProps } from './Element';
 import { Leaf } from './Leaf';
 import type { LeafProps } from './Leaf';
 import { Toolbar } from '../Toolbar';
+import { Paper } from '@mui/material';
 
 const initialValue: Descendant[] = [
   {
@@ -49,13 +50,15 @@ export const Editor = () => {
   return (
     <Slate editor={editor} value={initialValue}>
       <Toolbar />
-      <Editable
-        style={{ padding: '24px' }}
-        renderElement={renderElement}
-        renderLeaf={renderLeaf}
-        placeholder="Enter some rich text..."
-        autoFocus
-      />
+      <Paper elevation={10} sx={{ margin: '24px' }}>
+        <Editable
+          style={{ padding: '24px' }}
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          placeholder="Enter some rich text..."
+          autoFocus
+        />
+      </Paper>
     </Slate>
   );
 };
