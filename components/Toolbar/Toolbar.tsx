@@ -5,6 +5,11 @@ import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import { MarkButtonGroup } from '@/components/MarkButtonGroup';
 import { BlockButtonGroup } from '@/components/BlockButtonGroup';
+import { styled } from '@mui/material';
+
+const Container = styled('div')`
+  padding: 0 24px;
+`;
 
 export type T = {
   format: string;
@@ -24,8 +29,8 @@ const marks: T[] = [
     icon: <FormatItalicIcon />,
   },
   {
-    format: 'underlined',
-    ariaLabel: 'underlined',
+    format: 'underline',
+    ariaLabel: 'underline',
     icon: <FormatUnderlinedIcon />,
   },
 ];
@@ -49,7 +54,7 @@ const blocks: T[] = [
 
 export const Toolbar = () => {
   return (
-    <div>
+    <Container>
       <Paper
         elevation={0}
         sx={{
@@ -62,6 +67,6 @@ export const Toolbar = () => {
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
         <BlockButtonGroup blocks={blocks} />
       </Paper>
-    </div>
+    </Container>
   );
 }
