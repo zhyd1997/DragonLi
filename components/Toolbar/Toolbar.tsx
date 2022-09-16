@@ -29,8 +29,8 @@ const marks: T[] = [
     icon: <FormatItalicIcon />,
   },
   {
-    format: 'underlined',
-    ariaLabel: 'underlined',
+    format: 'underline',
+    ariaLabel: 'underline',
     icon: <FormatUnderlinedIcon />,
   },
 ];
