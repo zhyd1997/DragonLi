@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { globalStyles } from '@/styles/globals.js';
+import { globalStyles } from '@/styles/globals';
 import { Layout } from '@/components/Layout';
 import { Navbar } from '@/components/Navbar';
 
