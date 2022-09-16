@@ -6,5 +6,84 @@ export const globalStyles = (
     * {
       box-sizing: border-box;
     }
+
+    input,
+    textarea {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.4;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    pre {
+      padding: 10px;
+      background-color: #aaa;
+      white-space: pre-wrap;
+    }
+
+    :not(pre) > code {
+      font-family: monospace;
+      background-color: #aaa;
+      padding: 3px;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 20em;
+    }
+
+    blockquote {
+      border-left: 2px solid #ddd;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 10px;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    blockquote[dir='rtl'] {
+      border-left: none;
+      padding-left: 0;
+      padding-right: 10px;
+      border-right: 2px solid #ddd;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+      border: 2px solid #ddd;
+    }
+
+    input {
+      box-sizing: border-box;
+      font-size: 0.85em;
+      width: 100%;
+      padding: 0.5em;
+      border: 2px solid #ddd;
+      background: #fafafa;
+    }
+
+    input:focus {
+      outline: 0;
+      border-color: blue;
+    }
+
+    iframe {
+      width: 100%;
+      border: 1px solid #eee;
+    }
+
+    [data-slate-editor] > * + * {
+      margin-top: 1em;
+    }
   `}/>
 );
