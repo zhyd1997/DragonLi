@@ -1,12 +1,13 @@
+import type { AppProps } from 'next/app';
+import { globalStyles } from '@/styles/globals.js';
 import { Layout } from '@/components/Layout';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { globalStyles } from '@/styles/globals.js'
-import type { AppProps } from 'next/app'
+import { Navbar } from '@/components/Navbar';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
-      <ThemeSwitcher />
+      <Navbar />
       {globalStyles}
       <Component {...pageProps} />
     </Layout>
