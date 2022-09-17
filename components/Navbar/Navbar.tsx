@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { styled } from "@mui/material";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Nav = styled('nav')`
   margin-right: auto;
@@ -56,6 +57,7 @@ export const Navbar = () => {
           </li>
         </ul>
       </Nav>
+      <ConnectButton />
       <ThemeSwitcher />
     </Box>
   )
