@@ -10,7 +10,7 @@ import {
   createClient,
   WagmiConfig,
 } from 'wagmi';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
 import { globalStyles } from '@/styles/globals';
 import { Layout } from '@/components/Layout';
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       chain.goerli,
     ],
     [
-      alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID }),
+      infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY }),
       publicProvider(),
     ]
   );

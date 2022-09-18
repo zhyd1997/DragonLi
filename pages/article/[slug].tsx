@@ -3,6 +3,15 @@ import Head from 'next/head';
 import Typography from '@mui/material/Typography';
 import { Editor as Renderer } from '@/components/Editor';
 import type { Descendant } from 'slate';
+import { Subscribe } from '@/components/Subscribe';
+import { styled } from '@mui/material';
+
+const Container = styled('div')` 
+  margin: 24px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+`;
 
 interface Article {
   slug: string;
@@ -26,16 +35,19 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
       </Head>
 
       <main>
-        <div style={{ margin: '24px' }}>
-          <Typography variant='h5' component={'div'}>
-            {article.title}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {article.author.slice(0, 5)}
-            {'...'}
-            {article.author.slice(article.author.length - 5)}
-          </Typography>
-        </div>
+        <Container style={{ margin: '24px' }}>
+          <Subscribe recipient={article.author} style={{ marginLeft: 'auto' }} />
+          <div>
+            <Typography variant='h5' component={'div'}>
+              {article.title}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              {article.author.slice(0, 5)}
+              {'...'}
+              {article.author.slice(article.author.length - 5)}
+            </Typography>
+          </div>
+        </Container>
         <Renderer value={article.content} editable={false} />
       </main>
     </div>
