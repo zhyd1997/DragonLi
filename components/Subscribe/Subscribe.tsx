@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import type { CSSProperties } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { utils } from "ethers";
-import { chainId, useAccount } from "wagmi";
+import { Signer, utils } from "ethers";
+import { chainId, useSigner } from "wagmi";
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -19,7 +19,11 @@ type SubscribeProps = {
 };
 
 export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
-  const { address } = useAccount();
+  const { data: signer } = useSigner({ 
+    onError(err) {
+      console.error(err);
+    },
+  });
   const [open, setOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -54,7 +58,8 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
   const createFlow = async (
     recipient: string,
     // amount per mounth in Ether (or in dollars if using stablecoins)
-    amount: string
+    amount: string,
+    signer: Signer,
   ) => {
     setIsLoading(true);
     const _isInValid = validate(amount);
@@ -86,8 +91,6 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
         userData,
       });
 
-      const signer = customHttpProvider.getSigner(address);
-
       await createFlowOperation.exec(signer);
     } catch (e) {
       console.error(e);
@@ -97,7 +100,8 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
   };
 
   const subscribe = async () => {
-    await createFlow(recipient, amount);
+    if (!signer) return;
+    await createFlow(recipient, amount, signer);
   };
 
   return (
