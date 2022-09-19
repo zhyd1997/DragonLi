@@ -12,6 +12,14 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { customHttpProvider } from "./config";
 import { Form } from "@/components/Form";
+import { styled } from "@mui/material";
+
+const paymentToken = 'fDAIx';
+
+const ModalFooter = styled('div')`
+  display: flex;
+  align-items: center;
+`;
 
 type SubscribeProps = {
   recipient: string;
@@ -29,22 +37,41 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
   const [amount, setAmount] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFetchingFlow, setISFetchingFlow] = useState<boolean>(false);
+  const [isFetchingFlow, setIsFetchingFlow] = useState<boolean>(false);
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (!signer || !account) {
+      return;
+    }
+
+    (async () => {
+      const sf = await Framework.create({
+        chainId: chainId.goerli,
+        provider: customHttpProvider,
+      });
+
+      const superToken = await sf.loadSuperToken(paymentToken);
+      const _balance = await superToken.balanceOf({ account, providerOrSigner: signer });
+
+      setBalance(_balance);
+    })();
+  }, [account, signer]);
 
   useEffect(()  => {
     if (!signer || !account) {
       return;
     }
     (async () => {
-      setISFetchingFlow(true);
+      setIsFetchingFlow(true);
       const sf = await Framework.create({
         chainId: chainId.goerli,
         provider: customHttpProvider,
       });
       
-      const DAIxContract = await sf.loadSuperToken('fDAIx');
-      const DAIx = DAIxContract.address;
+      const superToken = await sf.loadSuperToken(paymentToken);
+      const DAIx = superToken.address;
       
       const sender = account;
       const receiver = utils.getAddress(recipient);
@@ -56,7 +83,7 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
         providerOrSigner: signer,
       });
 
-      setISFetchingFlow(false);
+      setIsFetchingFlow(false);
       if (flowRate === '0') {
         setIsSubscribed(false);
       } else {
@@ -115,8 +142,8 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
         provider: customHttpProvider,
       });
   
-      const DAIxContract = await sf.loadSuperToken('fDAIx');
-      const DAIx = DAIxContract.address;
+      const superToken = await sf.loadSuperToken(paymentToken);
+      const DAIx = superToken.address;
 
       const userData = utils.defaultAbiCoder.encode(['string'], ['zhyd1997.eth']);
 
@@ -129,6 +156,7 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
 
       await createFlowOperation.exec(signer);
       setIsLoading(false);
+      setOpen(false);
       setIsSubscribed(true);
     } catch (e) {
       console.error(e);
@@ -186,6 +214,7 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
             >
               continuous support the author per second instead of one-time payment.
             </Typography>
+            <br />
             <Form>
               <TextField
                 error={!isValid}
@@ -196,18 +225,28 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
                 helperText={!isValid && "Incorrect entry."}
               />
             </Form>
-            <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+            <br />
+            <ModalFooter>
+              <Typography id="supertoken balance" variant="body2">
+                <b>{paymentToken}</b>
+                {' '}
+                balance:
+                {' '}
+                <b>{balance}</b>
+              </Typography>
+
               <LoadingButton
                 variant="contained"
                 color="success"
-                disabled={isLoading}
+                sx={{ marginLeft: "auto" }}
+                disabled={isLoading || balance === '0'}
                 loading={isLoading}
                 loadingIndicator={"loading..."}
                 onClick={subscribe}
               >
                 Yes
               </LoadingButton>
-            </div>
+            </ModalFooter>
           </Box>
         </Fade>
       </Modal>
