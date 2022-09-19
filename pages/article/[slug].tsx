@@ -12,6 +12,39 @@ const Container = styled('div')`
   justify-content: flex-start;
   flex-direction: row-reverse;
 `;
+// fake content.
+const content: Descendant[] = [
+  {
+    type: 'paragraph',
+    children: [
+      { text: 'This is ' },
+      { text: 'rich', bold: true },
+      { text: ' text, ' },
+      { text: 'much', italic: true },
+      { text: ' better than a ' },
+      { text: '<textarea>', code: true },
+      { text: '!' },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text:
+          "Since it's rich text, you can do things like turn a selection of text ",
+      },
+      { text: 'bold', bold: true },
+      {
+        text:
+          ', or add a semantically rendered block quote in the middle of the page, like this:',
+      },
+    ],
+  },
+  {
+    type: 'block-quote',
+    children: [{ text: 'A wise quote.' }],
+  },
+];
 
 interface Article {
   slug: string;
@@ -22,10 +55,16 @@ interface Article {
 };
 
 type ArticlePageProps = {
-  article: Article;
+  article?: Article;
 };
 
-const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
+const ArticlePage: NextPage<ArticlePageProps> = ({ article = {
+  slug: 'example',
+  title: 'Example',
+  description: 'official example',
+  author: '0xe073B0fb1554390a47aBeCBDD42599a64c7D45DF',
+  content,
+} }) => {
   return (
     <div>
       <Head>
@@ -53,53 +92,5 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
     </div>
   );
 };
-
-export const getServerSideProps = (): { props: ArticlePageProps } => {
-  // fake content.
-  const content: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [
-        { text: 'This is ' },
-        { text: 'rich', bold: true },
-        { text: ' text, ' },
-        { text: 'much', italic: true },
-        { text: ' better than a ' },
-        { text: '<textarea>', code: true },
-        { text: '!' },
-      ],
-    },
-    {
-      type: 'paragraph',
-      children: [
-        {
-          text:
-            "Since it's rich text, you can do things like turn a selection of text ",
-        },
-        { text: 'bold', bold: true },
-        {
-          text:
-            ', or add a semantically rendered block quote in the middle of the page, like this:',
-        },
-      ],
-    },
-    {
-      type: 'block-quote',
-      children: [{ text: 'A wise quote.' }],
-    },
-  ];
-
-  return {
-    props: {
-      article: {
-        slug: 'example',
-        title: 'Example',
-        description: 'official example',
-        author: '0xe073B0fb1554390a47aBeCBDD42599a64c7D45DF',
-        content,
-      }
-    },
-  }
-}
 
 export default ArticlePage;
