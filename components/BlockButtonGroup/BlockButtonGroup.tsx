@@ -5,6 +5,9 @@ import { Editor, Element, Transforms } from "slate";
 import type { T } from "@/components/Toolbar";
 import { StyledToggleButtonGroup } from "@/components/StyledToggleButtonGroup";
 
+
+const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+
 type BlockButtonGroupProps = {
   blocks: T[];
 };
@@ -46,6 +49,7 @@ export const BlockButtonGroup: FC<BlockButtonGroupProps> = ({ blocks }) => {
 
   const toggleBlock = (editor: any, format: any): void => {
     const isActive = isBlockActive(editor, format, 'type');
+    const isList = LIST_TYPES.includes(format);
 
     Transforms.unwrapNodes(
       editor,
@@ -53,16 +57,21 @@ export const BlockButtonGroup: FC<BlockButtonGroupProps> = ({ blocks }) => {
         match: node =>
           !Editor.isEditor(node) &&
           Element.isElement(node) &&
-          false,
+          LIST_TYPES.includes(node.type),
         split: true,
       }
     );
 
     const newProperties: Partial<Element> = {
-      type: isActive ? 'paragraph' : format,
+      type: isActive ? 'paragraph' : isList ? 'list-item' : format,
     };
 
     Transforms.setNodes<Element>(editor, newProperties);
+
+    if (!isActive && isList) {
+      const block = { type: format, children: [] };
+      Transforms.wrapNodes(editor, block);
+    }
   };
 
   const onMouseDown = (evt: React.MouseEvent<HTMLButtonElement>, format: any) => {
