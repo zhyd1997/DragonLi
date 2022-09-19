@@ -174,7 +174,7 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
       <LoadingButton
         variant="contained"
         color="primary"
-        disabled={isLoading || isFetchingFlow || isSubscribed}
+        disabled={isLoading || isFetchingFlow || isSubscribed || !account}
         loading={isLoading || isFetchingFlow}
         loadingIndicator={"loading..."}
         onClick={handleOpen}
