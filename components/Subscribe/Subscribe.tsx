@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { Signer, utils } from "ethers";
-import { chainId, useSigner } from "wagmi";
+import { chainId, useAccount, useSigner } from "wagmi";
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -19,6 +19,7 @@ type SubscribeProps = {
 };
 
 export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
+  const { address: account } = useAccount();
   const { data: signer } = useSigner({ 
     onError(err) {
       console.error(err);
@@ -28,6 +29,41 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
   const [amount, setAmount] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetchingFlow, setISFetchingFlow] = useState<boolean>(false);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+
+  useEffect(()  => {
+    if (!signer || !account) {
+      return;
+    }
+    (async () => {
+      setISFetchingFlow(true);
+      const sf = await Framework.create({
+        chainId: chainId.goerli,
+        provider: customHttpProvider,
+      });
+      
+      const DAIxContract = await sf.loadSuperToken('fDAIx');
+      const DAIx = DAIxContract.address;
+      
+      const sender = account;
+      const receiver = utils.getAddress(recipient);
+
+      const { flowRate } = await sf.cfaV1.getFlow({
+        superToken: DAIx,
+        sender,
+        receiver,
+        providerOrSigner: signer,
+      });
+
+      setISFetchingFlow(false);
+      if (flowRate === '0') {
+        setIsSubscribed(false);
+      } else {
+        setIsSubscribed(true);
+      }
+    })();
+  }, [account, recipient, signer]);
 
   const handleOpen = async () => {
     setOpen(true);
@@ -92,11 +128,12 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
       });
 
       await createFlowOperation.exec(signer);
+      setIsLoading(false);
+      setIsSubscribed(true);
     } catch (e) {
       console.error(e);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const subscribe = async () => {
@@ -109,12 +146,12 @@ export const Subscribe: FC<SubscribeProps> = ({ recipient, style={} }) => {
       <LoadingButton
         variant="contained"
         color="primary"
-        disabled={isLoading}
-        loading={isLoading}
+        disabled={isLoading || isFetchingFlow || isSubscribed}
+        loading={isLoading || isFetchingFlow}
         loadingIndicator={"loading..."}
         onClick={handleOpen}
       >
-        Subscribe
+        {isSubscribed ? 'Subscribed' : 'Subscribe'}
       </LoadingButton>
       <Modal
         aria-labelledby="subscribe-modal"
