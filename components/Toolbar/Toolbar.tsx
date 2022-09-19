@@ -4,6 +4,7 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import CodeIcon from '@mui/icons-material/Code';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import { MarkButtonGroup } from '@/components/MarkButtonGroup';
@@ -35,6 +36,11 @@ const marks: T[] = [
     format: 'underline',
     ariaLabel: 'underline',
     icon: <FormatUnderlinedIcon />,
+  },
+  {
+    format: 'code',
+    ariaLabel: 'code',
+    icon: <CodeIcon />,
   },
 ];
 
