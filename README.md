@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Intro
+
+the app is a blog platform and alternative to [Mirror](https://mirror.xyz/), but has some differences:
+
+- better editor improving user experience for writers.
+- support favourite writers in seconds stream for readers by integrated with [Superfluid](https://superfluid.finance/) instead of one-time payment.
+
 ## Getting Started
 
 First, setup the environment variable:
