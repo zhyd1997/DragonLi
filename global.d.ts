@@ -45,6 +45,12 @@ export type HeadingTwoElement = {
   children: Descendant[]
 }
 
+export type HeadingThreeElement = {
+  type: 'heading-three'
+  align?: string
+  children: Descendant[]
+}
+
 export type ImageElement = {
   type: 'image'
   url: string
@@ -86,6 +92,7 @@ type CustomElement =
   | EditableVoidElement
   | HeadingElement
   | HeadingTwoElement
+  | HeadingThreeElement
   | ImageElement
   | LinkElement
   | ButtonElement
