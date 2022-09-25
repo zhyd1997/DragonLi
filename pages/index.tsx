@@ -73,6 +73,12 @@ export const getStaticProps = (): { props: HomePageProps } => {
     props: {
       articles: [
         {
+          id: 'sere2w',
+          slug: 'ethonline-2022-submission',
+          title: 'ETHOnline 2022 Submission',
+          description: 'presentation',
+        },
+        {
           id: 'skjdf2',
           slug: 'example',
           title: 'Example',

@@ -52,6 +52,21 @@ export const Element: FC<ElementProps> = ({ attributes, children, element }) => 
           {children}
         </ol>
       )
+    case 'table': 
+      return (
+        <table>
+          <tbody {...attributes}>{children}</tbody>
+        </table>
+      );
+
+    case 'table-row':
+      return (
+        <tr {...attributes}>{children}</tr>
+      );
+    case 'table-cell':
+      return (
+        <td {...attributes}>{children}</td>
+      );
     default:
       return (
         <p style={style} {...attributes}>
